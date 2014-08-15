@@ -38,7 +38,8 @@ class Calculation(PDFComponent):
               To be used in PdfFit.alloc()
     rcalc  -- list of r values, this is set after calculation is finished
     Gcalc  -- list of calculated G values
-    stype  -- scattering type, 'X' or 'N'
+    stype  -- scattering type, 'E', 'N' or 'X',
+              Note for now "E" has the same effect as "X".
     qmax   -- maximum value of Q in inverse Angstroms.  Termination ripples
               are ignored for qmax=0.
     qdamp  -- specifies width of Gaussian damping factor in pdf_obs due
@@ -62,7 +63,7 @@ class Calculation(PDFComponent):
         self.setRGrid(rmin=0.1, rstep=0.01, rmax=10.0)
         self.rcalc = []
         self.Gcalc = []
-        self.stype = 'X'
+        self.stype = 'E'
         # user must specify qmax to get termination ripples
         self.qmax = 0.0
         self.qdamp = 0.001
@@ -162,7 +163,11 @@ class Calculation(PDFComponent):
                 server.constrain(key.encode('ascii'), var.formula.encode('ascii'))
 
         # set up dataset
-        server.alloc(self.stype, self.qmax, self.qdamp,
+
+        # Make "E" stand for the X-ray factors.
+        # FIXME: remove this when we have better electron factors.
+        stp = self.stype.upper().replace('E', 'X')
+        server.alloc(stp, self.qmax, self.qdamp,
                 self.rmin, self.rmax, self.rlen)
         server.setvar('qbroad', self.qbroad)
         server.setvar('dscale', self.dscale)
@@ -223,6 +228,8 @@ class Calculation(PDFComponent):
             lines.append('stype=X  x-ray scattering')
         elif self.stype == 'N':
             lines.append('stype=N  neutron scattering')
+        elif self.stype == 'E':
+            lines.append('stype=E  electron scattering')
         # dscale
         if self.dscale:
             lines.append('dscale=%g' % self.dscale)
