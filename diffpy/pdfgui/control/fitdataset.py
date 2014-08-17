@@ -287,6 +287,8 @@ class FitDataSet(PDFDataSet):
             lines.append('stype=X  x-ray scattering')
         elif self.stype == 'N':
             lines.append('stype=N  neutron scattering')
+        elif self.stype == 'E':
+            lines.append('stype=E  electron scattering')
         # qmax
         if self.qmax:
             lines.append('qmax=%.2f' % self.qmax)

@@ -34,7 +34,8 @@ class PDFDataSet(PDFComponent):
         Gobs       -- list of observed G values
         drobs      -- list of standard deviations of robs
         dGobs      -- list of standard deviations of Gobs
-        stype      -- scattering type, 'X' or 'N'
+        stype      -- scattering type, 'E', 'N' or 'X'.
+                      Note for now "E" has the same effect as "X".
         qmax       -- maximum value of Q in inverse Angstroms.  Termination
                       ripples are neglected for qmax=0.
         qdamp      -- specifies width of Gaussian damping factor in pdf_obs due
@@ -75,7 +76,7 @@ class PDFDataSet(PDFComponent):
         self.Gobs = []
         self.drobs = []
         self.dGobs = []
-        self.stype = 'X'
+        self.stype = 'E'
         # user must specify qmax to get termination ripples
         self.qmax = 0.0
         self.qdamp = 0.001
@@ -179,6 +180,8 @@ class PDFDataSet(PDFComponent):
             self.stype = 'X'
         elif re.search('(neutron|PDFgetN)', header, re.I):
             self.stype = 'N'
+        elif re.search('(electron|PDFgetE)', header, re.I):
+            self.stype = 'E'
         # qmax
         regexp = r"\bqmax *= *(%(f)s)\b" % rx
         res = re.search(regexp, header, re.I)
@@ -293,6 +296,8 @@ class PDFDataSet(PDFComponent):
             lines.append('stype=X  x-ray scattering')
         elif self.stype == 'N':
             lines.append('stype=N  neutron scattering')
+        elif self.stype == 'E':
+            lines.append('stype=E  electron scattering')
         # qmax
         if self.qmax == 0:
             qmax_line = 'qmax=0   correction not applied'

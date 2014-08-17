@@ -351,12 +351,16 @@ class Fitting(Organizer):
                 formula_ascii = var.formula.encode('ascii')
                 self.server.constrain(key_ascii, formula_ascii)
 
-        # phase paramters configured
+        # phase parameters configured
 
         for dataset in self.datasets:
             dataset.clearRefined()
+            # Make "E" stand for the X-ray factors.
+            # FIXME: remove this when we have better electron factors.
+            stp = dataset.stype.encode('ascii')
+            stp = stp.upper().replace('E', 'X')
             self.server.read_data_string(dataset.writeResampledObsStr(),
-                                         dataset.stype.encode('ascii'),
+                                         stp,
                                          dataset.qmax,
                                          dataset.qdamp)
             self.server.setvar('qbroad', dataset.qbroad)
