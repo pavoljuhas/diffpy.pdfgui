@@ -38,7 +38,7 @@ class Calculation(PDFComponent):
               To be used in PdfFit.alloc()
     rcalc  -- list of r values, this is set after calculation is finished
     Gcalc  -- list of calculated G values
-    stype  -- scattering type, 'E', 'N' or 'X',
+    stype  -- scattering type, 'E', 'N' or 'X'.
               Note for now "E" has the same effect as "X".
     qmax   -- maximum value of Q in inverse Angstroms.  Termination ripples
               are ignored for qmax=0.

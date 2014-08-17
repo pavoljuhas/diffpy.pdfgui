@@ -163,8 +163,8 @@ class CalculationPanel(wx.Panel, PDFPanel):
             elif stype == 'X':
                 self.radioBoxStype.SetSelection(2)
             else:
-                self.configuration.stype = 'X'
-                self.radioBoxStype.SetSelection(2)
+                self.configuration.stype = 'E'
+                self.radioBoxStype.SetSelection(0)
 
 
         for (key, value) in self.ctrlMap.items():
