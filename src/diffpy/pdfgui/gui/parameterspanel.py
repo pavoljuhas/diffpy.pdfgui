@@ -276,10 +276,16 @@ class ParametersPanel(wx.Panel, PDFPanel):
             self.popupID1 = wx.NewId()
             self.popupID2 = wx.NewId()
             self.popupID3 = wx.NewId()
+            self.popupCopyID = wx.NewId()
+            self.popupPasteID = wx.NewId()
 
             self.Bind(wx.EVT_MENU, self.onPopupFixFree,  id=self.popupID1)
             self.Bind(wx.EVT_MENU, self.onPopupCopyRefinedToInitial,  id=self.popupID2)
             self.Bind(wx.EVT_MENU, self.onPopupRenameParameters,  id=self.popupID3)
+            self.Bind(wx.EVT_MENU,
+                      self.onPopupCopyParameters, id=self.popupCopyID)
+            self.Bind(wx.EVT_MENU,
+                      self.onPopupPasteParameters, id=self.popupPasteID)
 
         # make a menu
         menu = wx.Menu()
@@ -288,6 +294,8 @@ class ParametersPanel(wx.Panel, PDFPanel):
         menu.Append(self.popupID1, "Fix / Free")
         menu.Append(self.popupID2, "Copy Refined To Initial")
         menu.Append(self.popupID3, "Rename Parameters")
+        menu.Append(self.popupCopyID, "Copy")
+        menu.Append(self.popupPasteID, "Paste")
 
         # Popup the menu.  If an item is selected then its handler
         # will be called before PopupMenu returns.
@@ -402,6 +410,15 @@ class ParametersPanel(wx.Panel, PDFPanel):
         event.Skip()
         return
 
+
+    def onPopupCopyParameters(self, event):
+        grid = self.grid_parameters
+        selection = gridutils.getSelectedCells(grid)
+        print(selection)
+        return
+
+    def onPopupPasteParameters(self, event):
+        return
 
     ##### end of Popup menu events  ###########################################
 
