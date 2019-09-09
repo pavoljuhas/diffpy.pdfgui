@@ -17,6 +17,8 @@
 """
 
 import os
+import shutil
+import tempfile
 from unittest import TestCase
 from contextlib import contextmanager
 
@@ -67,6 +69,17 @@ def overridefiledialog(status, paths):
         yield
     finally:
         wx.FileDialog = save_filedialog
+    return
+
+
+@contextmanager
+def temporarydirectory():
+    "Create temporary directory and remove it on context exit."
+    tmpd = tempfile.mkdtemp()
+    try:
+        yield tmpd
+    finally:
+        shutil.rmtree(tmpd)
     return
 
 
